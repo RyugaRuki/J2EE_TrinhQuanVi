@@ -1,6 +1,5 @@
 package com.example.Bai2.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -15,30 +14,26 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.example.Bai2.model.Book;
+import com.example.Bai2.service.BookService;
 
 @RestController
 @RequestMapping("/api/books")
 public class BookController {
 
-    private List<Book> books = new ArrayList<>();
+    private final BookService bookService;
 
-    public BookController() {
-
-        books.add(new Book(1, "Nhà giả kim", "Paulo Coelho"));
-        books.add(new Book(2, "Dám bị ghét", "Ichiro Kishimi & Fumitake Koga"));
+    public BookController(BookService bookService) {
+        this.bookService = bookService;
     }
 
     @GetMapping
     public List<Book> getAllBooks() {
-        return books;
+        return bookService.getAll();
     }
 
     @GetMapping("/{id}")
     public Book getBookById(@PathVariable int id) {
-        return books.stream()
-                .filter(b -> b.getId() == id)
-                .findFirst()
-                .orElse(null);
+        return bookService.getById(id).orElse(null);
     }
 
     @PostMapping
@@ -46,25 +41,17 @@ public class BookController {
         if (book == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Request body is missing");
         }
-        books.add(book);
-        return book;
+        return bookService.add(book);
     }
 
     @PutMapping("/{id}")
     public Book updateBook(@PathVariable int id, @RequestBody Book bookUpdate) {
-        for (Book b : books) {
-            if (b.getId() == id) {
-                b.setTitle(bookUpdate.getTitle());
-                b.setAuthor(bookUpdate.getAuthor());
-                return b;
-            }
-        }
-        return null;
+        return bookService.update(id, bookUpdate);
     }
 
     @DeleteMapping("/{id}")
     public String deleteBook(@PathVariable int id) {
-        boolean removed = books.removeIf(b -> b.getId() == id);
+        boolean removed = bookService.delete(id);
         return removed ? "Xóa thành công sách có ID: " + id : "Không tìm thấy sách";
     }
 }
