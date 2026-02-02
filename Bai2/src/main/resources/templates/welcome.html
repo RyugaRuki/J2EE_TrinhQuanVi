@@ -8,20 +8,17 @@
     <link rel="stylesheet" href="/css/styles.css" />
 </head>
 <body class="bg-light">
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
-  <div class="container">
-    <a class="navbar-brand" href="/books/home">Bai2 - Thư viện</a>
-  </div>
-</nav>
+  <div th:replace="fragments/header :: header"></div>
 
-<div class="container">
+  <div class="container">
     <div class="text-center py-5">
         <h1 class="display-5" th:text="${message}">Welcome</h1>
         <p class="lead">Trang demo sử dụng Thymeleaf và Bootstrap.</p>
         <a class="btn btn-primary btn-lg" href="/books/home">Xem sách</a>
     </div>
-    
-</div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-" crossorigin="anonymous"></script>
+  
+  </div>
+  <div th:replace="fragments/footer :: footer"></div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-" crossorigin="anonymous"></script>
 </body>
 </html>

@@ -1,0 +1,16 @@
+<header th:fragment="header">
+    <style>
+        .site-header { background: #f8fafc; padding: 12px 20px; border-bottom: 1px solid #e5e7eb; }
+        .site-header .nav { display:flex; gap:12px; align-items:center; }
+        .site-header a { color:#374151; text-decoration:none; font-weight:600; }
+        .site-header a.logo { font-size:18px; color:#111827; margin-right:16px; }
+    </style>
+    <div class="site-header">
+        <div class="nav">
+            <a th:href="@{/}" class="logo">Quản Lý Sản Phẩm</a>
+            <a th:href="@{/}">Trang Chủ</a>
+            <a th:href="@{/products}">Sản Phẩm</a>
+            <a th:href="@{/categories}">Danh Mục</a>
+        </div>
+    </div>
+</header>

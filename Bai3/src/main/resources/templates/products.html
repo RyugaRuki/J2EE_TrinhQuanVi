@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products - Bai3</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+        .btn-warning {
+            background-color: #ffc107;
+            color: black;
+        }
+        .btn-warning:hover {
+            background-color: #e0a800;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        tr:hover {
+            background-color: #f9f9f9;
+        }
+        .actions {
+            display: flex;
+            gap: 10px;
+        }
+        .no-products {
+            text-align: center;
+            color: #666;
+            padding: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div th:replace="fragments/header :: header"></div>
+
+    <div class="container">
+        <h1>Danh Sách Sản Phẩm</h1>
+        
+        <div class="btn-group">
+            <a th:href="@{/products/add}" class="btn btn-primary">+ Thêm Sản Phẩm Mới</a>
+            <a th:href="@{/}" class="btn btn-secondary">← Quay Lại Trang Chủ</a>
+        </div>
+
+        <div th:if="${#lists.isEmpty(products)}" class="no-products">
+            <p>Không có sản phẩm nào. <a th:href="@{/products/add}">Thêm sản phẩm mới</a></p>
+        </div>
+
+        <table th:unless="${#lists.isEmpty(products)}">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Tên Sản Phẩm</th>
+                    <th>Giá</th>
+                    <th>Danh Mục</th>
+                    <th>Hành Động</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="product : ${products}">
+                    <td th:text="${product.id}"></td>
+                    <td>
+                        <div th:if="${product.imageName != null}">
+                            <img th:src="@{'/uploads/' + ${product.imageName}}" alt="img" style="max-height:60px; max-width:100px; object-fit:cover; border-radius:4px; margin-right:8px;"/>
+                        </div>
+                        <span th:text="${product.name}"></span>
+                    </td>
+                    <td th:text="${#numbers.formatDecimal(product.price, 1, 'COMMA', 2, 'COMMA')} + ' VNĐ'"></td>
+                    <td th:text="${product.category}"></td>
+                    <td>
+                        <div class="actions">
+                            <a th:href="@{/products/edit/{id}(id=${product.id})}" class="btn btn-warning">Sửa</a>
+                            <a th:href="@{/products/delete/{id}(id=${product.id})}" class="btn btn-danger" onclick="return confirm('Bạn có chắc muốn xóa?')">Xóa</a>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>
